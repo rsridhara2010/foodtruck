@@ -17,13 +17,15 @@ import java.util.stream.Collectors;
 @Service
 public class FoodTruckService implements IFoodTruck {
 
+    public static final String SFGOV_ORG_RESOURCE_RQZJ_SFAT_JSON = "https://data.sfgov.org/resource/rqzj-sfat.json";
     ObjectMapper mapper = new ObjectMapper();
 
     RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    public ResponseEntity<?> findAllFoodTrucks(String status) throws Exception{
-        URI url = new URI("https://data.sfgov.org/resource/rqzj-sfat.json");
+    public ResponseEntity<?> findAllFoodTrucksByStatus(String status) throws  java.net.URISyntaxException, com.fasterxml.jackson.core.JsonProcessingException
+    {
+        URI url = new URI(SFGOV_ORG_RESOURCE_RQZJ_SFAT_JSON);
         ResponseEntity<String> response = restTemplate.getForEntity(url,String.class);
         if(StringUtils.hasText(status)){
             var allFoodTrucks =Arrays.asList( mapper.readValue(response.getBody(),FoodTruckModel[].class));
